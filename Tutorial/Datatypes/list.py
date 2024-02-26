@@ -143,3 +143,26 @@ print('\nIterating Through a List:')
 # iterate through the list
 for car in cars:
     print(car)
+
+# List Comprehension
+# create a list with square values
+print('\nList Comprehension:')
+numbers = [n**2 for n in range(1, 6)]
+print(numbers)
+
+# Check if an Item Exists in the List
+print('\nCheck if an Item Exists in the List:')
+fruits = ['apple', 'cherry', 'banana']
+print('orange' in fruits)    # False
+print('cherry' in fruits)    # True
+
+# The list() constructor returns a list
+print('\nlist() method:')
+text = 'Python'
+
+# convert string to list
+text_list = list(text)
+print(text_list)
+
+# check type of text_list
+print(type(text_list))
