@@ -26,13 +26,13 @@ else
     done
 fi
 
-# 3. Run Alembic migrations to create/update database schema
+# 2. Run Alembic migrations to create/update database schema
 echo "Applying database migrations..."
 if ! alembic upgrade head; then
     echo "Alembic migration failed!"
     exit 1
 fi
 
-# 4. Start the FastAPI app with uvicorn
+# 3. Start the FastAPI app with uvicorn
 echo "Starting FastAPI application..."
 exec uvicorn apps.main:app --reload --host 0.0.0.0 --port 8000
