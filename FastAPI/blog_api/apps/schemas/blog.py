@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class BlogBase(BaseModel):
@@ -7,6 +7,10 @@ class BlogBase(BaseModel):
 
 
 class BlogCreate(BlogBase):
+    pass
+
+
+class BlogUpdate(BlogBase):
     pass
 
 
