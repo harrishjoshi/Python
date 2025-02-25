@@ -2,10 +2,14 @@ from sqlalchemy.orm import Session
 
 from apps.models.user import User
 from apps.schemas.user import UserCreate, UserUpdate
+from apps.utils.security import Hash
 
 
 def create(db: Session, request: UserCreate):
     user = User(**request.model_dump())
+    hased_password = Hash.hash_password(user.password)
+    user.password = hased_password
+
     db.add(user)
     db.commit()
     db.refresh(user)
