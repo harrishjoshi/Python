@@ -1,34 +1,18 @@
 import datetime
 
-from pydantic import BaseModel, field_validator
-
-
-class PayloadValidation:
-    @field_validator("title")
-    @classmethod
-    def title_not_empty(cls, v: str) -> str:
-        if not v or v.strip() == "":
-            raise ValueError("title must not be empty")
-        return v.strip()
-
-    @field_validator("content")
-    @classmethod
-    def content_not_empty(cls, v: str) -> str:
-        if not v or v.strip() == "":
-            raise ValueError("content must not be empty")
-        return v.strip()
+from pydantic import BaseModel, Field
 
 
 class BlogBase(BaseModel):
-    title: str
-    content: str
+    title: str = Field(..., min_length=1, strip_whitespace=True)
+    content: str = Field(..., min_length=1, strip_whitespace=True)
 
 
-class BlogCreate(BlogBase, PayloadValidation):
+class BlogCreate(BlogBase):
     pass
 
 
-class BlogUpdate(BlogBase, PayloadValidation):
+class BlogUpdate(BlogBase):
     pass
 
 
