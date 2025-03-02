@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional
 
-from jose import JWTError, jwt
+from jose import jwt
 from passlib.context import CryptContext
 
-from apps.schemas.token import TokenData, TokenResponse
-
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-REFRESH_TOKEN_EXPIRE_DAYS = 7
+from apps.constants.jwt import (
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    ALGORITHM,
+    REFRESH_TOKEN_EXPIRE_DAYS,
+    SECRET_KEY,
+)
+from apps.schemas.token import TokenData
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -59,27 +60,6 @@ class Token:
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
         return encoded_jwt
-
-    @staticmethod
-    def verify_token(token: str) -> TokenResponse:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            email: str = payload.get("sub")
-
-            if email is None:
-                raise InvalidTokenError("Token missing subject claim")
-
-            token_data = TokenData(
-                email=payload.get("sub"),
-                token_type=payload.get("token_type", "access"),
-                expires_at=payload.get("exp"),
-                issued_at=payload.get("iat"),
-            )
-
-            return token_data
-
-        except JWTError as e:
-            raise InvalidTokenError(f"Invalid token: {str(e)}")
 
     @staticmethod
     def is_token_expired(token_data: TokenData) -> bool:
